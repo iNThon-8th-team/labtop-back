@@ -1,3 +1,4 @@
+export { PortfolioRepository } from './portfolio.repository';
 export { AlertRepository } from './alert.repository';
 export { BoardRepository } from './board.repository';
 export { LabRepository } from './lab.repository';

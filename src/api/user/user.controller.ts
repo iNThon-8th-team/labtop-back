@@ -9,7 +9,12 @@ import {
   Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
-import { GetUserResDto, OkResDto, UpdateUserReqDto } from 'src/dto';
+import {
+  GetUserResDto,
+  OkResDto,
+  UpdatePortfolioReqDto,
+  UpdateUserReqDto,
+} from 'src/dto';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -19,6 +24,7 @@ import {
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
 import { UserService } from './user.services';
+import { GetPortfolioResDto } from 'src/dto/user/get-portfolio-res.dto';
 
 @Controller('user')
 export class UserController {
@@ -70,5 +76,27 @@ export class UserController {
     @GetUser() user: User,
   ): Promise<OkResDto> {
     return this.userService.updateUser(study, user.id);
+  }
+
+  @Put('/portfolio')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: UpdateUserReqDto })
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '포트폴리오 수정하기' })
+  async updatePortfolio(
+    @Body() portfolio: UpdatePortfolioReqDto,
+    @GetUser() user: User,
+  ): Promise<OkResDto> {
+    return this.userService.updatePortfolio(portfolio, user.id);
+  }
+
+  @Get('/portfolio/:userId')
+  @ApiOkResponse({ type: GetPortfolioResDto })
+  @ApiOperation({ summary: '포트폴리오 가져오기' })
+  async getPortfolio(
+    @Param('userId') userId: number,
+  ): Promise<GetPortfolioResDto> {
+    return this.userService.getPortfolio(userId);
   }
 }

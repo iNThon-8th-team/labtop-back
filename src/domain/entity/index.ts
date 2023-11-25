@@ -1,3 +1,4 @@
+export { Portfolio } from './portfolio.entity';
 export { Alert } from './alert.entity';
 export { Board } from './board.entity';
 export { Lab } from './lab.entity';
