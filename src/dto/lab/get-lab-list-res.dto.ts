@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Lab, User } from 'src/domain/entity';
 import { GetUserResDto } from '../user';
+import { category } from 'src/common/enum';
 
 export class GetLabListResDto {
   constructor(lab: Lab, professor: User) {
@@ -8,6 +9,7 @@ export class GetLabListResDto {
     this.name = lab.name;
     this.introduction = lab.introduction;
     this.isRecruiting = lab.isRecruiting;
+    this.category = lab.category;
     this.professor = new GetUserResDto(professor);
   }
 
@@ -22,6 +24,9 @@ export class GetLabListResDto {
 
   @ApiProperty({ description: '모집 중 여부' })
   isRecruiting!: boolean;
+
+  @ApiProperty({ description: '모집 중 여부' })
+  category!: category;
 
   @ApiProperty({ description: '교수' })
   professor!: GetUserResDto;
