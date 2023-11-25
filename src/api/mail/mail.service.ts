@@ -33,6 +33,7 @@ export class MailService {
           new GetUserResDto(message.receiver),
           new GetUserResDto(message.sender),
           message,
+          message.receiverId == query,
         );
       }),
     );
