@@ -9,6 +9,13 @@ export class User extends DateEntity {
   @Column({
     type: 'varchar',
     length: '50',
+    comment: '이메일',
+  })
+  email: string;
+
+  @Column({
+    type: 'varchar',
+    length: '50',
     comment: '사용자 이름',
   })
   username: string;
