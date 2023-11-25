@@ -15,4 +15,9 @@ export class CreateUserReqDto {
   @IsString()
   @ApiProperty({ description: '비밀번호' })
   password: string;
+
+  @IsDefined()
+  @IsString()
+  @ApiProperty({ description: '교수 여부' })
+  isProfessor: boolean;
 }

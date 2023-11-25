@@ -4,14 +4,14 @@ import { User } from '../entity';
 
 @CustomRepository(User)
 export class UserRepository extends Repository<User> {
-  async findOneByEmaileWithPassword(email: string) {
+  async findOneByEmailWithPassword(email: string): Promise<User> {
     return this.findOne({
       where: { email },
       select: { id: true, email: true, username: true, password: true },
     });
   }
 
-  async findOneById(id: number) {
+  async findOneById(id: number): Promise<User> {
     return this.findOneByOrFail({ id });
   }
 }

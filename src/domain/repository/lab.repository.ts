@@ -4,7 +4,7 @@ import { Lab } from '../entity';
 import { GetLabListReqDto } from 'src/dto';
 @CustomRepository(Lab)
 export class LabRepository extends Repository<Lab> {
-  async findBySearchOption(query: GetLabListReqDto) {
+  async findBySearchOption(query: GetLabListReqDto): Promise<Lab[]> {
     const { search, category } = query;
     return this.find({
       where: [
@@ -22,6 +22,13 @@ export class LabRepository extends Repository<Lab> {
         },
       ],
       relations: { professor: true },
+    });
+  }
+
+  async findByIdWithResearchers(labId: number): Promise<Lab> {
+    return this.findOneOrFail({
+      where: { id: labId },
+      relations: { researchers: true },
     });
   }
 }

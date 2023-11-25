@@ -19,7 +19,7 @@ export class AuthService {
 
   async signIn(data: LoginReqDto) {
     const { email, password } = data;
-    const user = await this.userRepository.findOneByEmaileWithPassword(email);
+    const user = await this.userRepository.findOneByEmailWithPassword(email);
     if (!user) {
       throw new UnauthorizedException('사용자 이름과 비밀번호를 확인해주세요.');
     }
@@ -38,8 +38,7 @@ export class AuthService {
 
   async signUp(userData: CreateUserReqDto) {
     const user = this.userRepository.create(userData);
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(userData.password, 10);
     const newUser = await this.userRepository.save(user);
     return new CreateUserResDto(newUser);
   }
