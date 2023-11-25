@@ -1,10 +1,31 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { OkResDto, GetUserResDto, UpdateUserReqDto } from 'src/dto';
-import { UserRepository } from 'src/domain/repository';
+import { SubscribeRepository, UserRepository } from 'src/domain/repository';
+import { Subscribe } from 'src/domain/entity';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private subscribeRepository: SubscribeRepository,
+  ) {}
+
+  async subscribe(labId: number, userId: number): Promise<OkResDto> {
+    const sub = this.subscribeRepository.create();
+    sub.labId = labId;
+    sub.userId = userId;
+    await this.subscribeRepository.save(sub);
+    return new OkResDto();
+  }
+
+  async unsubscribe(labId: number, userId: number): Promise<OkResDto> {
+    const sub = await this.subscribeRepository.findOneByUserIdAndLabId(
+      userId,
+      labId,
+    );
+    await this.subscribeRepository.remove(sub);
+    return new OkResDto();
+  }
 
   async getUser(userId: number): Promise<GetUserResDto> {
     const user = await this.userRepository.findOneById(userId).catch(() => {
