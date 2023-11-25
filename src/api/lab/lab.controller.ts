@@ -94,7 +94,7 @@ export class LabController {
     return this.labService.joinLab(labId, user.id);
   }
 
-  @Get('/my')
+  @Get('/my/:userId')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: [GetLabListResDto] })
