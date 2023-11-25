@@ -94,7 +94,7 @@ export class BoardService {
       .catch(() => {
         throw new BadRequestException('존재하지 않는 게시물입니다.');
       });
-    const lab = await this.labRepository.findByIdWithResearchers(
+    const lab = await this.labRepository.findOneByIdWithResearchers(
       existBoard.labId,
     );
     const isBelongsToLab = lab.researchers
