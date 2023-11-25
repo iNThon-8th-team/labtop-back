@@ -23,14 +23,14 @@ export class PublicationController {
   @Post()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: [CreatePublicationReqDto] })
+  @ApiBody({ type: CreatePublicationReqDto })
   @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: '논문 등록하기' })
   async createPublication(
-    @Body() publications: CreatePublicationReqDto[],
+    @Body() publication: CreatePublicationReqDto,
     @GetUser() user: User,
   ): Promise<OkResDto> {
-    return this.publicationService.createPublication(publications, user.id);
+    return this.publicationService.createPublication(publication, user.id);
   }
 
   @Get('/:publicationId')
