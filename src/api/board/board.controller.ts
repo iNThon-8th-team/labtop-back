@@ -8,6 +8,7 @@ import {
   Query,
   Req,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
@@ -79,5 +80,17 @@ export class BoardController {
     @Param('labId') labId: number,
   ): Promise<GetBoardListResDto[]> {
     return this.boardService.getBoardListWithLabId(labId);
+  }
+
+  @Delete('/:boardId')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '게시물 삭제하기' })
+  async deleteStudy(
+    @Param('boardId') boardId: number,
+    @GetUser() user: User,
+  ): Promise<OkResDto> {
+    return this.boardService.deleteBoard(boardId, user.id);
   }
 }

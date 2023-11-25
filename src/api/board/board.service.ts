@@ -119,4 +119,16 @@ export class BoardService {
       return new GetBoardListResDto(board);
     });
   }
+
+  async deleteBoard(boardId: number, userId: number): Promise<OkResDto> {
+    const board = await this.boardRepository.findOneById(boardId);
+    const author = await this.researcherRepository.findOneById(
+      board.researcherId,
+    );
+    if (author.userId !== userId) {
+      throw new UnauthorizedException('작성자만이 삭제할 수 있습니다.');
+    }
+    board.softRemove();
+    return new OkResDto();
+  }
 }
