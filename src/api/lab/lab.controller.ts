@@ -6,12 +6,15 @@ import {
   Put,
   Get,
   UseGuards,
+  Param,
+  Req,
 } from '@nestjs/common';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
 import {
   CreateLabReqDto,
+  GetLabDetailResDto,
   GetLabListReqDto,
   GetLabListResDto,
   OkResDto,
@@ -24,10 +27,15 @@ import {
 } from '@nestjs/swagger';
 import { LabService } from './lab.service';
 import { UpdateLabReqDto } from 'src/dto/lab/update-lab-req.dto';
+import { AuthService } from '../auth/auth.service';
+import { Request } from 'express';
 
 @Controller('lab')
 export class LabController {
-  constructor(private labService: LabService) {}
+  constructor(
+    private labService: LabService,
+    private authService: AuthService,
+  ) {}
 
   @Get()
   @ApiQuery({ type: GetLabListReqDto })
@@ -59,5 +67,15 @@ export class LabController {
     @Body() lab: UpdateLabReqDto,
   ): Promise<OkResDto> {
     return this.labService.updateLab(lab, user.id);
+  }
+
+  @Get('/:labId')
+  @ApiOkResponse({ type: GetLabDetailResDto })
+  async getLabDetail(
+    @Param('labId') labId: number,
+    @Req() request: Request,
+  ): Promise<GetLabDetailResDto> {
+    const token = this.authService.decodeToken(request);
+    return this.labService.getLabDetail(labId, token?.sub);
   }
 }
