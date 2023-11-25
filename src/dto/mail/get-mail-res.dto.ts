@@ -8,11 +8,13 @@ export class GetMailResDto {
     receiver: GetUserResDto,
     sender: GetUserResDto,
     message: Message,
+    receiving: boolean,
   ) {
     (this.receiver = receiver), (this.id = message.id);
     this.sender = sender;
     this.content = message.content;
     this.createdAt = message.createdAt;
+    this.receiving = receiving;
   }
 
   @ApiProperty({ description: '메시지 id' })
@@ -20,6 +22,9 @@ export class GetMailResDto {
 
   @ApiProperty({ description: '시각' })
   createdAt!: Date;
+
+  @ApiProperty({ description: '유형' })
+  receiving: boolean;
 
   @ApiProperty({ description: '받는 유저' })
   receiver!: GetUserResDto;
