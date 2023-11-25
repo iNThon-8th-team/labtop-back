@@ -15,16 +15,12 @@ export class PublicationService {
   ) {}
 
   async createPublication(
-    publications: CreatePublicationReqDto[],
+    publication: CreatePublicationReqDto,
     userId: number,
   ): Promise<OkResDto> {
-    await Promise.all(
-      publications.map(async (publication) => {
-        const newPublication = this.publicationRepository.create(publication);
-        newPublication.authorId = userId;
-        await this.publicationRepository.save(newPublication);
-      }),
-    );
+    const newPublication = this.publicationRepository.create(publication);
+    newPublication.authorId = userId;
+    await this.publicationRepository.save(newPublication);
     return new OkResDto();
   }
 
