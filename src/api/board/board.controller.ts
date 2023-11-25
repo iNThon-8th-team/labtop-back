@@ -87,7 +87,7 @@ export class BoardController {
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: '게시물 삭제하기' })
-  async deleteStudy(
+  async deleteBoard(
     @Param('boardId') boardId: number,
     @GetUser() user: User,
   ): Promise<OkResDto> {
