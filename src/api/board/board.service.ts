@@ -3,10 +3,15 @@ import {
   BoardRepository,
   LabRepository,
   ResearcherRepository,
+  SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
 import { OkResDto } from 'src/dto';
-import { GetBoardResDto, CreateBoardReqDto } from 'src/dto/board';
+import {
+  GetBoardResDto,
+  CreateBoardReqDto,
+  GetBoardReqDto,
+} from 'src/dto/board';
 
 @Injectable()
 export class BoardService {
@@ -15,9 +20,10 @@ export class BoardService {
     private labRepository: LabRepository,
     private userRepository: UserRepository,
     private researcherRepository: ResearcherRepository,
+    private subscribeRepository: SubscribeRepository,
   ) {}
 
-  async getBoardList(): Promise<GetBoardResDto[]> {
+  async getBoardList(query: GetBoardReqDto): Promise<GetBoardResDto[]> {
     const board = await this.boardRepository.findAll();
     return await Promise.all(
       board.map(async (board) => {
@@ -33,8 +39,6 @@ export class BoardService {
       }),
     );
   }
-
-  async;
 
   async createBoard(
     board: CreateBoardReqDto,

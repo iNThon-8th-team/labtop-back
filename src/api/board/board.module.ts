@@ -6,6 +6,7 @@ import {
   BoardRepository,
   LabRepository,
   ResearcherRepository,
+  SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
 
@@ -16,6 +17,7 @@ import {
       UserRepository,
       BoardRepository,
       ResearcherRepository,
+      SubscribeRepository,
     ]),
   ],
   controllers: [BoardController],

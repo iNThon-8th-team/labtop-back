@@ -31,8 +31,10 @@ export class BoardController {
   @ApiQuery({ type: GetBoardReqDto })
   @ApiOkResponse({ type: [GetBoardResDto] })
   @ApiOperation({ summary: '게시판 목록 가져오기' })
-  async getBoardList(): Promise<GetBoardResDto[]> {
-    return this.boardService.getBoardList();
+  async getBoardList(
+    @Query() query: GetBoardReqDto,
+  ): Promise<GetBoardResDto[]> {
+    return this.boardService.getBoardList(query);
   }
 
   @Post()
