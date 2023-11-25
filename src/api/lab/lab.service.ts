@@ -12,6 +12,7 @@ import {
 } from 'src/dto';
 import {
   LabRepository,
+  ResearcherRepository,
   SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
@@ -23,6 +24,7 @@ export class LabService {
     private labRepository: LabRepository,
     private userRepository: UserRepository,
     private subscribeRepository: SubscribeRepository,
+    private researcherRepository: ResearcherRepository,
   ) {}
 
   async getLabList(query: GetLabListReqDto): Promise<GetLabListResDto[]> {
@@ -46,7 +48,12 @@ export class LabService {
       );
     }
     newLab.professorId = userId;
-    await this.labRepository.save(newLab);
+    const { id: labId } = await this.labRepository.save(newLab);
+    const professor = this.researcherRepository.create({
+      userId,
+      labId,
+    });
+    await this.researcherRepository.save(professor);
     return new OkResDto();
   }
 
