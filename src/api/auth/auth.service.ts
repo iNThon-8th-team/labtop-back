@@ -21,7 +21,7 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async signIn(data: LoginReqDto) {
+  async signIn(data: LoginReqDto): Promise<LoginResDto> {
     const { email, password } = data;
     const user = await this.userRepository.findOneByEmailWithPassword(email);
     if (!user) {
@@ -40,7 +40,7 @@ export class AuthService {
     return new LoginResDto(accessToken, user);
   }
 
-  async signUp(userData: CreateUserReqDto) {
+  async signUp(userData: CreateUserReqDto): Promise<CreateUserResDto> {
     const user = this.userRepository.create(userData);
     user.password = await bcrypt.hash(userData.password, 10);
     const newUser = await this.userRepository.save(user);
