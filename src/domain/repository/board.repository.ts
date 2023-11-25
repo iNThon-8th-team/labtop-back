@@ -9,6 +9,10 @@ export class BoardRepository extends Repository<Board> {
     return this.find();
   }
 
+  async findOneById(id: number): Promise<Board> {
+    return this.findOneOrFail({ where: { id } });
+  }
+
   async findBySearchOption(query: GetBoardReqDto): Promise<Board[]> {
     const { labName, title, category } = query;
     if (!labName && !title && !category) return this.find();

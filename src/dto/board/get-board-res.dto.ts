@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Lab, Board, User } from 'src/domain/entity';
 import { GetLabListResDto } from '../lab';
+import { GetUserResDto } from '../user';
 
 export class GetBoardResDto {
-  constructor(board: Board, professor: User, lab: Lab) {
+  constructor(board: Board, user: User, professor: User, lab: Lab) {
     this.id = board.id;
     this.title = board.title;
     this.content = board.content;
     this.isNotice = board.isNotice;
+    this.author = new GetUserResDto(user);
     this.lab = new GetLabListResDto(lab, professor);
   }
 
@@ -22,6 +24,9 @@ export class GetBoardResDto {
 
   @ApiProperty({ description: '공지' })
   isNotice!: boolean;
+
+  @ApiProperty({ description: '작성자' })
+  author!: GetUserResDto;
 
   @ApiProperty({ description: '연구실' })
   lab!: GetLabListResDto;

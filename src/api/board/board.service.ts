@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import {
   BoardRepository,
   LabRepository,
@@ -12,6 +16,7 @@ import {
   CreateBoardReqDto,
   GetBoardReqDto,
   GetBoardListResDto,
+  UpdateBoardReqDto,
 } from 'src/dto/board';
 
 @Injectable()
@@ -24,21 +29,41 @@ export class BoardService {
     private subscribeRepository: SubscribeRepository,
   ) {}
 
-  async getBoardList(query: GetBoardReqDto): Promise<GetBoardResDto[]> {
-    const board = await this.boardRepository.findAll();
-    return await Promise.all(
+  async getBoardList(
+    query: GetBoardReqDto,
+    userId: number,
+  ): Promise<GetBoardResDto[]> {
+    const { subscribe, author } = query;
+    if (subscribe && !userId)
+      throw new BadRequestException('로그인이 필요합니다.');
+
+    const board = await this.boardRepository.findBySearchOption(query);
+    const subscribeList = (
+      await this.subscribeRepository.findByUserId(userId)
+    ).map((x) => x.labId);
+    const res = await Promise.all(
       board.map(async (board) => {
-        const professor = await this.userRepository.findOneById(
+        const author = await this.userRepository.findOneById(
           (
-            await this.researcherRepository.findByLabId(board.labId)
+            await this.researcherRepository.findOneById(board.researcherId)
           ).userId,
         );
         const lab = await this.labRepository.findByIdWithResearchers(
           board.labId,
         );
-        return new GetBoardResDto(board, professor, lab);
+        const professor = await this.userRepository.findOneById(
+          lab.professorId,
+        );
+        return new GetBoardResDto(board, author, professor, lab);
       }),
     );
+    return res
+      .filter((board) =>
+        subscribe ? subscribeList.includes(board.lab.id) : true,
+      )
+      .filter((board) =>
+        author ? board.author.username.includes(author) : true,
+      );
   }
 
   async createBoard(
@@ -56,6 +81,35 @@ export class BoardService {
     newBoard.researcherId = researcher.id;
     newBoard.labId = researcher.labId;
     await this.boardRepository.save(newBoard);
+    return new OkResDto();
+  }
+
+  async updateBoard(
+    board: UpdateBoardReqDto,
+    userId: number,
+  ): Promise<OkResDto> {
+    const user = await this.userRepository.findOneById(userId);
+    const existBoard = await this.boardRepository
+      .findOneById(board.id)
+      .catch(() => {
+        throw new BadRequestException('존재하지 않는 게시물입니다.');
+      });
+    const lab = await this.labRepository.findByIdWithResearchers(
+      existBoard.labId,
+    );
+    const isBelongsToLab = lab.researchers
+      .map((researcher) => researcher.userId)
+      .includes(user.id);
+    if (!isBelongsToLab) {
+      throw new UnauthorizedException(
+        '소속 연구원이 아닐 경우 게시물을 수정할 수 없습니다.',
+      );
+    }
+
+    existBoard.title = board.title;
+    existBoard.content = board.content;
+    existBoard.isNotice = board.isNotice;
+    await this.boardRepository.save(existBoard);
     return new OkResDto();
   }
 

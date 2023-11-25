@@ -1,12 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { category } from 'src/common/enum';
 
 export class GetBoardReqDto {
   @IsOptional()
-  @IsBoolean()
   @ApiProperty({ description: '구독 여부' })
-  subscribe?: boolean;
+  subscribe?: number;
 
   @IsOptional()
   @IsString()
