@@ -1,9 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import {
-  LabRepository,
-  ResearcherRepository,
-  UserRepository,
-} from 'src/domain/repository';
+import { LabRepository, UserRepository } from 'src/domain/repository';
 import { OkResDto } from 'src/dto';
 
 @Injectable()
@@ -11,7 +7,6 @@ export class ImageService {
   constructor(
     private labRepository: LabRepository,
     private userRepository: UserRepository,
-    private researchRepository: ResearcherRepository,
   ) {}
 
   async uploadUserImage(
@@ -34,7 +29,7 @@ export class ImageService {
     targetId: number,
   ): Promise<OkResDto> {
     const lab = await this.labRepository.findOneByIdWithResearchers(targetId);
-    const researcher = await this.researchRepository.findByUserId(userId);
+    const researcher = await this.userRepository.findOneById(userId);
     if (!userId || !lab.researchers.map((x) => x.id).includes(researcher.id)) {
       throw new UnauthorizedException('권한이 없습니다.');
     }
