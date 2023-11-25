@@ -18,26 +18,17 @@ import { CreateMailReqDto } from 'src/dto/mail/create-mail-req.dto';
 export class MailController {
   constructor(private mailService: MailService) {}
 
-  @Get('inbox')
+  @Get()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiOkResponse({ type: Promise<GetMailResDto[]> })
-  @ApiOperation({ summary: '수신 메시지 목록' })
-  async getInbox(@GetUser() user: User): Promise<GetMailResDto[]> {
-    //const req = new GetMailReqDto();
-    if (!user) throw new BadRequestException('로그인이 필요합니다.');
-    return await this.mailService.getMailList({ receiver: user.id });
-  }
-
-  @Get('outbox')
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @ApiOkResponse({ type: GetMailResDto })
-  @ApiOperation({ summary: '송신 메시지 목록' })
+  @ApiOkResponse({ type: [GetMailResDto] })
+  @ApiOperation({ summary: '메시지 목록' })
   async getOutbox(@GetUser() user: User): Promise<GetMailResDto[]> {
-    //const req = new GetMailReqDto();
     if (!user) throw new BadRequestException('로그인이 필요합니다.');
-    return await this.mailService.getMailList({ sender: user.id });
+    return this.mailService.sortResult(
+      await this.mailService.getMailList(user.id),
+      user.id,
+    );
   }
 
   @Post('write')

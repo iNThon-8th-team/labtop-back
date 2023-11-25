@@ -4,13 +4,14 @@ import { Message } from '../entity';
 import { GetMailReqDto } from 'src/dto';
 @CustomRepository(Message)
 export class MessageRepository extends Repository<Message> {
-  async findBySearchOption(req: GetMailReqDto): Promise<Message[]> {
-    const { sender, receiver } = req;
+  async findBySearchOption(req: number): Promise<Message[]> {
     return this.find({
       where: [
         {
-          senderId: sender ? sender : undefined,
-          receiverId: receiver ? receiver : undefined,
+          senderId: req ? req : undefined,
+        },
+        {
+          receiverId: req ? req : undefined,
         },
       ],
       relations: { sender: true, receiver: true },
