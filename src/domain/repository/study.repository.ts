@@ -7,6 +7,10 @@ export class StudyRepository extends Repository<Study> {
     return this.findOneByOrFail({ id: studyId });
   }
 
+  async findByUserId(userId: number): Promise<Study[]> {
+    return this.findBy({ userId });
+  }
+
   async findOneByIdWithUser(studyId: number): Promise<Study> {
     return this.findOneOrFail({
       where: { id: studyId },

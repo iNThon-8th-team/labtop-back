@@ -8,7 +8,6 @@ import {
   UseGuards,
   Param,
   Req,
-  Patch,
 } from '@nestjs/common';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
@@ -95,7 +94,7 @@ export class LabController {
     return this.labService.joinLab(labId, user.id);
   }
 
-  @Get()
+  @Get('/my')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: [GetLabListResDto] })
