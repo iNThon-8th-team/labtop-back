@@ -6,7 +6,6 @@ import {
 import {
   BoardRepository,
   LabRepository,
-  ResearcherRepository,
   SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
@@ -25,7 +24,6 @@ export class BoardService {
     private boardRepository: BoardRepository,
     private labRepository: LabRepository,
     private userRepository: UserRepository,
-    private researcherRepository: ResearcherRepository,
     private subscribeRepository: SubscribeRepository,
   ) {}
 
@@ -43,11 +41,7 @@ export class BoardService {
     ).map((x) => x.labId);
     const res = await Promise.all(
       board.map(async (board) => {
-        const author = await this.userRepository.findOneById(
-          (
-            await this.researcherRepository.findOneById(board.researcherId)
-          ).userId,
-        );
+        const author = await this.userRepository.findOneById(userId);
         const lab = await this.labRepository.findOneByIdWithResearchers(
           board.labId,
         );
@@ -77,8 +71,8 @@ export class BoardService {
         '연구원이 아닐 경우 게시물을 생성할 수 없습니다.',
       );
     }
-    const researcher = await this.researcherRepository.findByUserId(userId);
-    newBoard.researcherId = researcher.id;
+    const researcher = await this.userRepository.findOneById(userId);
+    newBoard.authorId = userId;
     newBoard.labId = researcher.labId;
     await this.boardRepository.save(newBoard);
     return new OkResDto();
@@ -98,7 +92,7 @@ export class BoardService {
       existBoard.labId,
     );
     const isBelongsToLab = lab.researchers
-      .map((researcher) => researcher.userId)
+      .map((researcher) => researcher.id)
       .includes(user.id);
     if (!isBelongsToLab) {
       throw new UnauthorizedException(
@@ -122,10 +116,8 @@ export class BoardService {
 
   async deleteBoard(boardId: number, userId: number): Promise<OkResDto> {
     const board = await this.boardRepository.findOneById(boardId);
-    const author = await this.researcherRepository.findOneById(
-      board.researcherId,
-    );
-    if (author.userId !== userId) {
+    const author = await this.userRepository.findOneById(board.authorId);
+    if (author.id !== userId) {
       throw new UnauthorizedException('작성자만이 삭제할 수 있습니다.');
     }
     board.softRemove();

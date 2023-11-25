@@ -1,7 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { DateEntity } from './dateEntity.entity';
-import { Author } from './author.entity';
 import { Study } from './study.entity';
+import { User } from './user.entity';
 
 @Entity({ name: 'publication' })
 export class Publication extends DateEntity {
@@ -28,10 +34,13 @@ export class Publication extends DateEntity {
   })
   link: string;
 
-  @OneToMany(() => Author, (author) => author.publication, {
-    cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
+  @Column()
+  authorId: number;
+
+  @ManyToOne(() => User, (author) => author.publications, {
+    cascade: ['insert', 'recover', 'update'],
   })
-  authors: Author[];
+  author: User;
 
   @OneToMany(() => Study, (study) => study.publication, {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],

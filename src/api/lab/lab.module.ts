@@ -4,7 +4,6 @@ import { LabService } from './lab.service';
 import { LabController } from './lab.controller';
 import {
   LabRepository,
-  ResearcherRepository,
   SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
@@ -16,7 +15,6 @@ import { AuthModule } from '../auth/auth.module';
       LabRepository,
       UserRepository,
       SubscribeRepository,
-      ResearcherRepository,
     ]),
     AuthModule,
   ],

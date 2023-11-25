@@ -9,7 +9,6 @@ import { DateEntity } from './dateEntity.entity';
 import { User } from './user.entity';
 import { category } from 'src/common/enum';
 import { Subscribe } from './subscribe.entity';
-import { Researcher } from './researcher.entity';
 import { Board } from './board.entity';
 
 @Entity({ name: 'lab' })
@@ -65,10 +64,10 @@ export class Lab extends DateEntity {
   })
   subscribes: Subscribe[];
 
-  @OneToMany(() => Researcher, (researcher) => researcher.lab, {
+  @OneToMany(() => User, (user) => user.lab, {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
   })
-  researchers: Researcher[];
+  researchers: User[];
 
   @OneToMany(() => Board, (board) => board.lab, {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],

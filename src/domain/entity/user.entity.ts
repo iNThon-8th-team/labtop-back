@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -8,10 +9,11 @@ import {
 import { DateEntity } from './dateEntity.entity';
 import { Lab } from './lab.entity';
 import { Subscribe } from './subscribe.entity';
-import { Researcher } from './researcher.entity';
 import { Message } from './mesage.entity';
 import { Alert } from './alert.entity';
 import { Study } from './study.entity';
+import { Publication } from './publication.entity';
+import { Board } from './board.entity';
 
 @Entity({ name: 'user' })
 @Unique(['email'])
@@ -69,6 +71,14 @@ export class User extends DateEntity {
   })
   profile: string;
 
+  @Column({ nullable: true })
+  labId: number;
+
+  @ManyToOne(() => Lab, (lab) => lab.researchers, {
+    cascade: ['insert', 'recover', 'update'],
+  })
+  lab: Lab;
+
   @OneToMany(() => Lab, (lab) => lab.professor, {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
   })
@@ -78,11 +88,6 @@ export class User extends DateEntity {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
   })
   subscribes: Subscribe[];
-
-  @OneToMany(() => Researcher, (researcher) => researcher.user, {
-    cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
-  })
-  researchers: Researcher[];
 
   @OneToMany(() => Message, (message) => message.sender, {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
@@ -103,4 +108,14 @@ export class User extends DateEntity {
     cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
   })
   studies: Study[];
+
+  @OneToMany(() => Board, (study) => study.author, {
+    cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
+  })
+  boards: Board[];
+
+  @OneToMany(() => Publication, (publication) => publication.author, {
+    cascade: ['insert', 'recover', 'remove', 'soft-remove', 'update'],
+  })
+  publications: Publication[];
 }
