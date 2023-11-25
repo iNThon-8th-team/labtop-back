@@ -60,7 +60,7 @@ export class LabService {
   async updateLab(lab: UpdateLabReqDto, userId: number): Promise<OkResDto> {
     const user = await this.userRepository.findOneById(userId);
     const existLab = await this.labRepository
-      .findByIdWithResearchers(lab.id)
+      .findOneByIdWithResearchers(lab.id)
       .catch(() => {
         throw new BadRequestException('존재하지 않는 연구실입니다.');
       });
@@ -84,9 +84,8 @@ export class LabService {
     labId: number,
     userId: number,
   ): Promise<GetLabDetailResDto> {
-    const lab = await this.labRepository.findByIdWithResearchsersAndProfessor(
-      labId,
-    );
+    const lab =
+      await this.labRepository.findOneByIdWithResearchsersAndProfessor(labId);
     const isSubscribed = await this.subscribeRepository.findOneByUserIdAndLabId(
       userId,
       labId,
@@ -105,6 +104,29 @@ export class LabService {
       lab.professor,
       researchers,
       Boolean(isSubscribed),
+    );
+  }
+
+  async joinLab(labId: number, userId: number): Promise<OkResDto> {
+    await this.labRepository.findOneById(labId).catch(() => {
+      throw new BadRequestException('해당하는 연구실 정보가 없습니다.');
+    });
+
+    const researcher = this.researcherRepository.create({ labId, userId });
+    await this.researcherRepository.save(researcher);
+    return new OkResDto();
+  }
+
+  async getMyLab(userId: number): Promise<GetLabListResDto[]> {
+    const { labs } = await this.userRepository.findOneByIdWithLabs(userId);
+
+    return await Promise.all(
+      labs.map(async (lab) => {
+        const { professor } = await this.labRepository.findOneByIdWithProfessor(
+          lab.id,
+        );
+        return new GetLabListResDto(lab, professor);
+      }),
     );
   }
 }

@@ -26,17 +26,28 @@ export class LabRepository extends Repository<Lab> {
     });
   }
 
-  async findByIdWithResearchers(labId: number): Promise<Lab> {
+  async findOneById(labId: number): Promise<Lab> {
+    return this.findOneByOrFail({ id: labId });
+  }
+
+  async findOneByIdWithResearchers(labId: number): Promise<Lab> {
     return this.findOneOrFail({
       where: { id: labId },
       relations: { researchers: true },
     });
   }
 
-  async findByIdWithResearchsersAndProfessor(labId: number): Promise<Lab> {
+  async findOneByIdWithResearchsersAndProfessor(labId: number): Promise<Lab> {
     return this.findOneOrFail({
       where: { id: labId },
       relations: { researchers: true, professor: true },
+    });
+  }
+
+  async findOneByIdWithProfessor(labId: number): Promise<Lab> {
+    return this.findOneOrFail({
+      where: { id: labId },
+      relations: { professor: true },
     });
   }
 }

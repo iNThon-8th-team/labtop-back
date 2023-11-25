@@ -30,7 +30,7 @@ export class BoardService {
             await this.researcherRepository.findByLabId(board.labId)
           ).userId,
         );
-        const lab = await this.labRepository.findByIdWithResearchers(
+        const lab = await this.labRepository.findOneByIdWithResearchers(
           board.labId,
         );
         return new GetBoardResDto(board, professor, lab);

@@ -21,4 +21,8 @@ export class UserRepository extends Repository<User> {
   async findOneById(id: number): Promise<User> {
     return this.findOneByOrFail({ id });
   }
+
+  async findOneByIdWithLabs(id: number): Promise<User> {
+    return this.findOneOrFail({ where: { id }, relations: { labs: true } });
+  }
 }
