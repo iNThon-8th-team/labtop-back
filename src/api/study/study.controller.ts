@@ -35,7 +35,7 @@ export class StudyController {
   @UseGuards(JwtAuthGuard)
   @ApiBody({ type: CreateStudyReqDto })
   @ApiOkResponse({ type: OkResDto })
-  @ApiOperation({ summary: '포트폴리오 생성하기' })
+  @ApiOperation({ summary: '스터디 생성하기' })
   async createStudy(
     @Body() study: CreateStudyReqDto,
     @GetUser() user: User,
@@ -48,7 +48,7 @@ export class StudyController {
   @UseGuards(JwtAuthGuard)
   @ApiBody({ type: UpdateStudyReqDto })
   @ApiOkResponse({ type: OkResDto })
-  @ApiOperation({ summary: '포트폴리오 수정하기' })
+  @ApiOperation({ summary: '스터디 수정하기' })
   async updateStudy(
     @Body() study: UpdateStudyReqDto,
     @GetUser() user: User,
@@ -58,7 +58,7 @@ export class StudyController {
 
   @Get('/:studyId')
   @ApiOkResponse({ type: GetStudyResDto })
-  @ApiOperation({ summary: '포트폴리오 가져오기' })
+  @ApiOperation({ summary: '스터디 가져오기' })
   async getStudy(@Param('studyId') studyId: number): Promise<GetStudyResDto> {
     return this.studyService.getStudy(studyId);
   }
@@ -67,7 +67,7 @@ export class StudyController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: OkResDto })
-  @ApiOperation({ summary: '포트폴리오 삭제하기' })
+  @ApiOperation({ summary: '스터디 삭제하기' })
   async deleteStudy(
     @Param('studyId') studyId: number,
     @GetUser() user: User,
@@ -77,7 +77,7 @@ export class StudyController {
 
   @Get('/list/:userId')
   @ApiOkResponse({ type: [GetStudyListResDto] })
-  @ApiOperation({ summary: '포트폴리오 목록 가져오기' })
+  @ApiOperation({ summary: '스터디 목록 가져오기' })
   async getStudyList(
     @Param('userId') userId: number,
   ): Promise<GetStudyListResDto[]> {

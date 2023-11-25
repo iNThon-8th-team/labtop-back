@@ -1,4 +1,4 @@
-import { IsDefined, IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStudyReqDto {
@@ -14,6 +14,11 @@ export class CreateStudyReqDto {
 
   @IsOptional()
   @IsString()
-  @ApiProperty({ description: '논문 링크' })
+  @ApiProperty({ description: '링크' })
   link: string;
+
+  @IsOptional()
+  @IsNumber()
+  @ApiProperty({ description: '논문 id' })
+  publicationId: number;
 }
