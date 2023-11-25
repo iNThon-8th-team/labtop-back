@@ -1,4 +1,14 @@
-import { Controller, Body, UseGuards, Param, Put, Get } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  UseGuards,
+  Param,
+  Put,
+  Get,
+  Post,
+  Query,
+  Delete,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
 import { GetUserResDto, OkResDto, UpdateUserReqDto } from 'src/dto';
 import {
@@ -14,6 +24,34 @@ import { UserService } from './user.services';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Post('/subscribe/:labId')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '구독하기' })
+  async subscribe(
+    @GetUser() user: User,
+    @Param('labId') labId: number,
+  ): Promise<OkResDto> {
+    try {
+      return await this.userService.subscribe(labId, user.id);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  @Delete('/subscribe/:labId')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '구독 취소하기' })
+  async unsubscribe(
+    @Param('labId') labId: number,
+    @GetUser() user: User,
+  ): Promise<OkResDto> {
+    return await this.userService.unsubscribe(labId, user.id);
+  }
 
   @Get('/:userId')
   @ApiOkResponse({ type: GetUserResDto })
