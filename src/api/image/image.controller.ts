@@ -18,11 +18,11 @@ import { User } from 'src/domain/entity';
 export class ImageController {
   constructor(private imageService: ImageService) {}
   @Post('user')
-  @UseInterceptors(FileInterceptor('image'))
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: '유저 이미지 업로드' })
+  @UseInterceptors(FileInterceptor('image'))
   async fileUploadUser(
     @UploadedFile() file: Express.Multer.File,
     @Body('id') id: number,
