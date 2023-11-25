@@ -17,6 +17,7 @@ import { LabModule } from './api/lab/lab.module';
 import { BoardModule } from './api/board/board.module';
 import { StudyModule } from './api/study/study.module';
 import { UserModule } from './api/user/user.module';
+import { ImageModule } from './api/image/image.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { UserModule } from './api/user/user.module';
     BoardModule,
     StudyModule,
     UserModule,
+    ImageModule,
   ],
 })
 export class AppModule {}
