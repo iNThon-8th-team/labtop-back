@@ -1,17 +1,10 @@
-import {
-  Query,
-  Controller,
-  Body,
-  Post,
-  Put,
-  Get,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Body, Post, Get, UseGuards, Param } from '@nestjs/common';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
 import {
   CreateBoardReqDto,
+  GetBoardListResDto,
   GetBoardReqDto,
   GetBoardResDto,
   OkResDto,
@@ -39,10 +32,20 @@ export class BoardController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: OkResDto })
-  async createLab(
+  @ApiOperation({ summary: '게시판 생성하기' })
+  async createBoard(
     @GetUser() user: User,
     @Body() board: CreateBoardReqDto,
   ): Promise<OkResDto> {
     return this.boardService.createBoard(board, user.id);
+  }
+
+  @Get('/:labId')
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '연구실의 게시판 목록 가져오기' })
+  async getBoardListWithLabId(
+    @Param('labId') labId: number,
+  ): Promise<GetBoardListResDto[]> {
+    return this.boardService.getBoardListWithLabId(labId);
   }
 }

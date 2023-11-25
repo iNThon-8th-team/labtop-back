@@ -6,7 +6,11 @@ import {
   UserRepository,
 } from 'src/domain/repository';
 import { OkResDto } from 'src/dto';
-import { GetBoardResDto, CreateBoardReqDto } from 'src/dto/board';
+import {
+  GetBoardResDto,
+  CreateBoardReqDto,
+  GetBoardListResDto,
+} from 'src/dto/board';
 
 @Injectable()
 export class BoardService {
@@ -34,8 +38,6 @@ export class BoardService {
     );
   }
 
-  async;
-
   async createBoard(
     board: CreateBoardReqDto,
     userId: number,
@@ -52,5 +54,12 @@ export class BoardService {
     newBoard.labId = researcher.labId;
     await this.boardRepository.save(newBoard);
     return new OkResDto();
+  }
+
+  async getBoardListWithLabId(labId: number): Promise<GetBoardListResDto[]> {
+    const boards = await this.boardRepository.findByLabId(labId);
+    return boards.map((board) => {
+      return new GetBoardListResDto(board);
+    });
   }
 }
