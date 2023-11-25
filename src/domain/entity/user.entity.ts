@@ -46,14 +46,14 @@ export class User extends DateEntity {
     default: false,
     comment: '교수 여부',
   })
-  is_professor: boolean;
+  isProfessor: boolean;
 
   @Column({
     type: 'boolean',
     default: false,
     comment: '연구진 여부',
   })
-  is_researcher: boolean;
+  isResearcher: boolean;
 
   @Column({
     type: 'text',

@@ -33,7 +33,7 @@ export class AuthService {
     const jwtPayload: JwtPayload = { email, sub: user.id };
     const expiresIn = Number(process.env.JWT_ACCESS_TOKEN_EXPIRES);
     const accessToken = this.jwtService.sign(jwtPayload, { expiresIn });
-    return new LoginResDto(accessToken);
+    return new LoginResDto(accessToken, user);
   }
 
   async signUp(userData: CreateUserReqDto) {

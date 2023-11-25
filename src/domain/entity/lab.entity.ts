@@ -40,7 +40,7 @@ export class Lab extends DateEntity {
   @Column({
     type: 'enum',
     enum: category,
-    default: category.OTHERS,
+    nullable: true,
     comment: '카테고리',
   })
   category: category;

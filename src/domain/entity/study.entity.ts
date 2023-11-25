@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { DateEntity } from './dateEntity.entity';
 import { User } from './user.entity';
-import { Publication } from './publication.entity';
 
 @Entity({ name: 'study' })
 export class Study extends DateEntity {
@@ -42,12 +41,4 @@ export class Study extends DateEntity {
     cascade: ['insert', 'recover', 'update'],
   })
   user: User;
-
-  @Column()
-  publicationId: number;
-
-  @ManyToOne(() => Publication, (publication) => publication.studies, {
-    cascade: ['insert', 'recover', 'update'],
-  })
-  publication: Publication;
 }
