@@ -1,7 +1,8 @@
 import { CustomRepository } from 'src/common/decorator/custom-repository.decorator';
 import { Like, Repository } from 'typeorm';
-import { Board, Subscribe } from '../entity';
+import { Board } from '../entity';
 import { GetBoardReqDto } from 'src/dto';
+
 @CustomRepository(Board)
 export class BoardRepository extends Repository<Board> {
   async findAll(): Promise<Board[]> {
@@ -24,5 +25,9 @@ export class BoardRepository extends Repository<Board> {
       ],
       relations: { lab: true },
     });
+  }
+
+  async findByLabId(labId: number): Promise<Board[]> {
+    return this.findBy({ labId });
   }
 }

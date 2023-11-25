@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsString } from 'class-validator';
+import { IsBoolean, IsDefined, IsString } from 'class-validator';
 export class CreateUserReqDto {
   @IsDefined()
   @IsString()
@@ -17,7 +17,7 @@ export class CreateUserReqDto {
   password: string;
 
   @IsDefined()
-  @IsString()
+  @IsBoolean()
   @ApiProperty({ description: '교수 여부' })
   isProfessor: boolean;
 }

@@ -7,7 +7,14 @@ export class UserRepository extends Repository<User> {
   async findOneByEmailWithPassword(email: string): Promise<User> {
     return this.findOne({
       where: { email },
-      select: { id: true, email: true, username: true, password: true },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        password: true,
+        isProfessor: true,
+        isResearcher: true,
+      },
     });
   }
 
