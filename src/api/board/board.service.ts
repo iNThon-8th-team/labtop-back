@@ -48,7 +48,7 @@ export class BoardService {
             await this.researcherRepository.findOneById(board.researcherId)
           ).userId,
         );
-        const lab = await this.labRepository.findByIdWithResearchers(
+        const lab = await this.labRepository.findOneByIdWithResearchers(
           board.labId,
         );
         const professor = await this.userRepository.findOneById(

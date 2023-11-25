@@ -8,6 +8,7 @@ import {
   UseGuards,
   Param,
   Req,
+  Patch,
 } from '@nestjs/common';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
@@ -80,5 +81,26 @@ export class LabController {
   ): Promise<GetLabDetailResDto> {
     const token = this.authService.decodeToken(request);
     return this.labService.getLabDetail(labId, token?.sub);
+  }
+
+  @Put('/:labId/join')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '연구실 가입하기' })
+  async joinLab(
+    @Param('labId') labId: number,
+    @GetUser() user: User,
+  ): Promise<OkResDto> {
+    return this.labService.joinLab(labId, user.id);
+  }
+
+  @Get()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: [GetLabListResDto] })
+  @ApiOperation({ summary: '내 연구실 가져오기' })
+  async getMyLab(@GetUser() user: User): Promise<GetLabListResDto[]> {
+    return this.labService.getMyLab(user.id);
   }
 }
