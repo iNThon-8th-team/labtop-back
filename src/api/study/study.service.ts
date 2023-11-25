@@ -44,7 +44,7 @@ export class StudyService {
 
   async getStudy(studyId: number): Promise<GetStudyResDto> {
     const study = await this.studyRepository
-      .findOneByIdWithUser(studyId)
+      .findOneByIdWithUserAndPublication(studyId)
       .catch(() => {
         throw new BadRequestException('해당하는 포트폴리오가 없습니다.');
       });
@@ -53,7 +53,7 @@ export class StudyService {
 
   async getStudyList(userId: number): Promise<GetStudyListResDto[]> {
     const studies = await this.studyRepository
-      .findByUserId(userId)
+      .findByUserIdWithPublication(userId)
       .catch(() => {
         throw new BadRequestException('해당하는 사용자가 없습니다.');
       });
