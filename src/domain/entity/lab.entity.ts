@@ -35,7 +35,7 @@ export class Lab extends DateEntity {
     default: false,
     comment: '모집 중 여부',
   })
-  is_recruiting: string;
+  isRecruiting: boolean;
 
   @Column({
     type: 'enum',

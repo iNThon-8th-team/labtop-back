@@ -10,4 +10,8 @@ export class UserRepository extends Repository<User> {
       select: { id: true, email: true, username: true, password: true },
     });
   }
+
+  async findOneById(id: number) {
+    return this.findOneByOrFail({ id });
+  }
 }

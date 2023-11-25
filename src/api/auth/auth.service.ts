@@ -41,7 +41,6 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     user.password = hashedPassword;
     const newUser = await this.userRepository.save(user);
-    newUser.password = undefined;
     return new CreateUserResDto(newUser);
   }
 }

@@ -15,6 +15,7 @@ import {
   Subscribe,
 } from './domain/entity';
 import { AuthModule } from './api/auth/auth.module';
+import { LabModule } from './api/lab/lab.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { AuthModule } from './api/auth/auth.module';
       synchronize: true,
     }),
     AuthModule,
+    LabModule,
   ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsString } from 'class-validator';
 export class CreateUserReqDto {
   @IsDefined()
   @IsString()
@@ -11,7 +11,7 @@ export class CreateUserReqDto {
   @ApiProperty({ description: '사용자 이름' })
   username: string;
 
-  @IsOptional()
+  @IsDefined()
   @IsString()
   @ApiProperty({ description: '비밀번호' })
   password: string;
