@@ -51,6 +51,7 @@ export class LabController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '연구실 생성하기' })
   async createLab(
     @GetUser() user: User,
     @Body() lab: CreateLabReqDto,
@@ -62,6 +63,7 @@ export class LabController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '연구실 수정하기' })
   async updateLab(
     @GetUser() user: User,
     @Body() lab: UpdateLabReqDto,
@@ -71,6 +73,7 @@ export class LabController {
 
   @Get('/:labId')
   @ApiOkResponse({ type: GetLabDetailResDto })
+  @ApiOperation({ summary: '연구실 상세 정보 가져오기' })
   async getLabDetail(
     @Param('labId') labId: number,
     @Req() request: Request,
