@@ -32,4 +32,11 @@ export class LabRepository extends Repository<Lab> {
       relations: { researchers: true },
     });
   }
+
+  async findByIdWithAllDetail(labId: number): Promise<Lab> {
+    return this.findOneOrFail({
+      where: { id: labId },
+      relations: { researchers: true, professor: true, boards: true },
+    });
+  }
 }

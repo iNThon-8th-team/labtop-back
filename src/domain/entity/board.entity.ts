@@ -26,7 +26,7 @@ export class Board extends DateEntity {
     default: false,
     comment: '공지 여부',
   })
-  is_notice: boolean;
+  isNotice: boolean;
 
   @Column({
     type: 'text',

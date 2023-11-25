@@ -5,11 +5,16 @@ import {
 } from '@nestjs/common';
 import {
   CreateLabReqDto,
+  GetLabDetailResDto,
   GetLabListReqDto,
   GetLabListResDto,
   OkResDto,
 } from 'src/dto';
-import { LabRepository, UserRepository } from 'src/domain/repository';
+import {
+  LabRepository,
+  SubscribeRepository,
+  UserRepository,
+} from 'src/domain/repository';
 import { UpdateLabReqDto } from 'src/dto/lab/update-lab-req.dto';
 
 @Injectable()
@@ -17,6 +22,7 @@ export class LabService {
   constructor(
     private labRepository: LabRepository,
     private userRepository: UserRepository,
+    private subscribeRepository: SubscribeRepository,
   ) {}
 
   async getLabList(query: GetLabListReqDto): Promise<GetLabListResDto[]> {
@@ -65,5 +71,31 @@ export class LabService {
     existLab.introduction = lab.introduction;
     await this.labRepository.save(existLab);
     return new OkResDto();
+  }
+
+  async getLabDetail(
+    labId: number,
+    userId: number,
+  ): Promise<GetLabDetailResDto> {
+    const lab = await this.labRepository.findByIdWithAllDetail(labId);
+    const isSubscribed = await this.subscribeRepository.findOneByUserIdAndLabId(
+      userId,
+      labId,
+    );
+
+    const researchers = (
+      await Promise.all(
+        lab.researchers.map(async (researcher) => {
+          return await this.userRepository.findOneById(researcher.userId);
+        }),
+      )
+    ).filter((researcher) => !researcher.isProfessor);
+
+    return new GetLabDetailResDto(
+      lab,
+      lab.professor,
+      researchers,
+      Boolean(isSubscribed),
+    );
   }
 }
