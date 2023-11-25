@@ -2,7 +2,18 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { validation } from './common/util/validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './domain/entity/user.entity';
+import {
+  User,
+  Lab,
+  Alert,
+  Author,
+  Board,
+  Message,
+  Publication,
+  Researcher,
+  Study,
+  Subscribe,
+} from './domain/entity';
 import { AuthModule } from './api/auth/auth.module';
 
 @Module({
@@ -24,7 +35,18 @@ import { AuthModule } from './api/auth/auth.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],
+      entities: [
+        User,
+        Lab,
+        Alert,
+        Author,
+        Board,
+        Message,
+        Publication,
+        Researcher,
+        Study,
+        Subscribe,
+      ],
       synchronize: true,
     }),
     AuthModule,
