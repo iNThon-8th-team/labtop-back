@@ -19,6 +19,7 @@ import { StudyModule } from './api/study/study.module';
 import { UserModule } from './api/user/user.module';
 import { ImageModule } from './api/image/image.module';
 import { MailModule } from './api/mail/mail.module';
+import { PublicationModule } from './api/publication/publication.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { MailModule } from './api/mail/mail.module';
     UserModule,
     ImageModule,
     MailModule,
+    PublicationModule,
   ],
 })
 export class AppModule {}

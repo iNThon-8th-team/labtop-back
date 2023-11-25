@@ -7,14 +7,14 @@ export class StudyRepository extends Repository<Study> {
     return this.findOneByOrFail({ id: studyId });
   }
 
-  async findByUserId(userId: number): Promise<Study[]> {
-    return this.findBy({ userId });
+  async findByUserIdWithPublication(userId: number): Promise<Study[]> {
+    return this.find({ where: { userId }, relations: { publication: true } });
   }
 
-  async findOneByIdWithUser(studyId: number): Promise<Study> {
+  async findOneByIdWithUserAndPublication(studyId: number): Promise<Study> {
     return this.findOneOrFail({
       where: { id: studyId },
-      relations: { user: true },
+      relations: { user: true, publication: true },
     });
   }
 }

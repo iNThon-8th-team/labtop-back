@@ -1,6 +1,11 @@
-import { Controller, Body, UseGuards, Post } from '@nestjs/common';
+import { Controller, Body, UseGuards, Post, Get, Param } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
-import { CreatePublicationReqDto, OkResDto } from 'src/dto';
+import {
+  CreatePublicationReqDto,
+  GetPublicationDetailResDto,
+  GetPublicationListResDto,
+  OkResDto,
+} from 'src/dto';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -26,5 +31,23 @@ export class PublicationController {
     @GetUser() user: User,
   ): Promise<OkResDto> {
     return this.publicationService.createPublication(publications, user.id);
+  }
+
+  @Get('/:publicationId')
+  @ApiOkResponse({ type: GetPublicationDetailResDto })
+  @ApiOperation({ summary: '논문 가져오기' })
+  async getPublication(
+    @Param('publicationId') publicationId: number,
+  ): Promise<GetPublicationDetailResDto> {
+    return this.publicationService.getPublication(publicationId);
+  }
+
+  @Get('/list/:labId')
+  @ApiOkResponse({ type: GetPublicationListResDto })
+  @ApiOperation({ summary: '논문 목록 가져오기' })
+  async getPublicationList(
+    @Param('labId') labId: number,
+  ): Promise<GetPublicationListResDto[]> {
+    return this.publicationService.getPublicationList(labId);
   }
 }
