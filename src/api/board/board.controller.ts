@@ -11,9 +11,9 @@ import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
 import {
-  CreateLabReqDto,
-  GetLabListReqDto,
-  GetLabListResDto,
+  CreateBoardReqDto,
+  GetBoardReqDto,
+  GetBoardResDto,
   OkResDto,
 } from 'src/dto';
 import {
@@ -23,17 +23,26 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { BoardService } from './board.service';
-import { GetBoardListResDto } from 'src/dto/board/get-board-list-res.dto';
-import { GetBoardListReqDto } from 'src/dto/board/get-board-list-req.dto';
 
 @Controller('board')
 export class BoardController {
   constructor(private boardService: BoardService) {}
   @Get()
-  @ApiQuery({ type: GetBoardListReqDto })
-  @ApiOkResponse({ type: [GetBoardListResDto] })
+  @ApiQuery({ type: GetBoardReqDto })
+  @ApiOkResponse({ type: [GetBoardResDto] })
   @ApiOperation({ summary: '게시판 목록 가져오기' })
-  async getBoardList(): Promise<GetBoardListResDto[]> {
+  async getBoardList(): Promise<GetBoardResDto[]> {
     return this.boardService.getBoardList();
+  }
+
+  @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: OkResDto })
+  async createLab(
+    @GetUser() user: User,
+    @Body() board: CreateBoardReqDto,
+  ): Promise<OkResDto> {
+    return this.boardService.createBoard(board, user.id);
   }
 }
