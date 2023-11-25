@@ -2,11 +2,7 @@ import { Module } from '@nestjs/common';
 import { ImageController } from './image.controller';
 import { ImageService } from './image.service';
 import { MulterModule } from '@nestjs/platform-express';
-import {
-  LabRepository,
-  ResearcherRepository,
-  UserRepository,
-} from 'src/domain/repository';
+import { LabRepository, UserRepository } from 'src/domain/repository';
 import { TypeOrmExModule } from 'src/common/typorm-ex.module';
 
 @Module({
@@ -14,11 +10,7 @@ import { TypeOrmExModule } from 'src/common/typorm-ex.module';
     MulterModule.register({
       dest: './files',
     }),
-    TypeOrmExModule.forCustomRepository([
-      LabRepository,
-      UserRepository,
-      ResearcherRepository,
-    ]),
+    TypeOrmExModule.forCustomRepository([LabRepository, UserRepository]),
   ],
   controllers: [ImageController],
   providers: [ImageService],
