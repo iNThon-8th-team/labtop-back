@@ -17,7 +17,15 @@ export class MailService {
     private messageRepository: MessageRepository,
   ) {}
 
-  async getMailList(query: GetMailReqDto): Promise<GetMailResDto[]> {
+  sortResult(array: GetMailResDto[], id: number): GetMailResDto[] {
+    return array.sort((a, b) => {
+      return a.receiver.id + a.sender.id - (b.receiver.id + b.sender.id) == 0
+        ? b.createdAt.getTime() - a.createdAt.getTime()
+        : a.receiver.id + a.sender.id - (b.receiver.id + b.sender.id);
+    });
+  }
+
+  async getMailList(query: number): Promise<GetMailResDto[]> {
     const messages = await this.messageRepository.findBySearchOption(query);
     return Promise.all(
       messages.map(async (message) => {
@@ -32,15 +40,13 @@ export class MailService {
 
   async writeMessage(user: User, mail: CreateMailReqDto): Promise<OkResDto> {
     const newMail = this.messageRepository.create();
-    const receiver = await this.userRepository.findOneByEmailWithPassword(
-      mail.to,
-    );
+    const receiver = mail.to;
     if (!receiver) {
       return new OkResDto();
     }
     newMail.content = mail.content;
     newMail.senderId = user.id;
-    newMail.receiverId = receiver.id;
+    newMail.receiverId = receiver;
 
     await this.messageRepository.save(newMail);
     return new OkResDto();

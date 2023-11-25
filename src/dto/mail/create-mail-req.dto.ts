@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsString } from 'class-validator';
+import { IsDefined, IsNumber, IsString } from 'class-validator';
 export class CreateMailReqDto {
   @IsDefined()
   @IsString()
@@ -7,7 +7,7 @@ export class CreateMailReqDto {
   content!: string;
 
   @IsDefined()
-  @IsString()
+  @IsNumber()
   @ApiProperty({ description: '받는 사람' })
-  to!: string;
+  to!: number;
 }
