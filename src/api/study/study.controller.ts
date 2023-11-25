@@ -11,6 +11,7 @@ import {
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
 import {
   CreateStudyReqDto,
+  GetStudyListResDto,
   GetStudyResDto,
   OkResDto,
   UpdateStudyReqDto,
@@ -72,5 +73,14 @@ export class StudyController {
     @GetUser() user: User,
   ): Promise<OkResDto> {
     return this.studyService.deleteStudy(studyId, user.id);
+  }
+
+  @Get('/list/:userId')
+  @ApiOkResponse({ type: [GetStudyListResDto] })
+  @ApiOperation({ summary: '포트폴리오 목록 가져오기' })
+  async getStudyList(
+    @Param('userId') userId: number,
+  ): Promise<GetStudyListResDto[]> {
+    return this.studyService.getStudyList(userId);
   }
 }
