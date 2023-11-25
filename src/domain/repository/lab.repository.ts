@@ -33,10 +33,10 @@ export class LabRepository extends Repository<Lab> {
     });
   }
 
-  async findByIdWithAllDetail(labId: number): Promise<Lab> {
+  async findByIdWithResearchsersAndProfessor(labId: number): Promise<Lab> {
     return this.findOneOrFail({
       where: { id: labId },
-      relations: { researchers: true, professor: true, boards: true },
+      relations: { researchers: true, professor: true },
     });
   }
 }

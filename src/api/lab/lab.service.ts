@@ -77,7 +77,9 @@ export class LabService {
     labId: number,
     userId: number,
   ): Promise<GetLabDetailResDto> {
-    const lab = await this.labRepository.findByIdWithAllDetail(labId);
+    const lab = await this.labRepository.findByIdWithResearchsersAndProfessor(
+      labId,
+    );
     const isSubscribed = await this.subscribeRepository.findOneByUserIdAndLabId(
       userId,
       labId,
