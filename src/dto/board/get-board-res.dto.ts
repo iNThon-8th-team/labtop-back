@@ -7,6 +7,7 @@ export class GetBoardResDto {
   constructor(board: Board, user: User, professor: User, lab: Lab) {
     this.id = board.id;
     this.title = board.title;
+    this.createdAt = board.createdAt;
     this.content = board.content;
     this.isNotice = board.isNotice;
     this.author = new GetUserResDto(user);
@@ -15,6 +16,9 @@ export class GetBoardResDto {
 
   @ApiProperty({ description: '보드 id' })
   id!: number;
+
+  @ApiProperty({ description: '작성 일자' })
+  createdAt!: Date;
 
   @ApiProperty({ description: '제목' })
   title!: string;

@@ -4,6 +4,7 @@ import { Board } from 'src/domain/entity';
 export class GetBoardListResDto {
   constructor(board: Board) {
     this.id = board.id;
+    this.createdAt = board.createdAt;
     this.title = board.title;
     this.content = board.content;
     this.isNotice = board.isNotice;
@@ -11,6 +12,9 @@ export class GetBoardListResDto {
 
   @ApiProperty({ description: '보드 id' })
   id!: number;
+
+  @ApiProperty({ description: '작성 일자' })
+  createdAt!: Date;
 
   @ApiProperty({ description: '제목' })
   title!: string;
