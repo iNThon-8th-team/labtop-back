@@ -14,10 +14,16 @@ export class Message extends DateEntity {
   })
   content: string;
 
+  @Column()
+  senderId: number;
+
   @ManyToOne(() => User, (user) => user.sendingMessages, {
     cascade: ['insert', 'recover', 'update'],
   })
   sender: User;
+
+  @Column()
+  receiverId: number;
 
   @ManyToOne(() => User, (user) => user.receivingMessages, {
     cascade: ['insert', 'recover', 'update'],

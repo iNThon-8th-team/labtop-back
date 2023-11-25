@@ -12,7 +12,7 @@ import { Subscribe } from './subscribe.entity';
 import { Researcher } from './researcher.entity';
 import { Board } from './board.entity';
 
-@Entity({ name: 'Lab' })
+@Entity({ name: 'lab' })
 export class Lab extends DateEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -51,6 +51,9 @@ export class Lab extends DateEntity {
     comment: '대표 이미지',
   })
   image: string;
+
+  @Column()
+  professorId: number;
 
   @ManyToOne(() => User, (user) => user.labs, {
     cascade: ['insert', 'recover', 'update'],

@@ -1,4 +1,5 @@
 import {
+  Column,
   Entity,
   ManyToOne,
   OneToMany,
@@ -17,10 +18,16 @@ export class Researcher extends DateEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => User, (user) => user.researchers, {
     cascade: ['insert', 'recover', 'update'],
   })
   user: User;
+
+  @Column()
+  labId: number;
 
   @ManyToOne(() => Lab, (lab) => lab.researchers, {
     cascade: ['insert', 'recover', 'update'],

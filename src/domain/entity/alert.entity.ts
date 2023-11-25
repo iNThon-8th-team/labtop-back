@@ -20,6 +20,9 @@ export class Alert extends DateEntity {
   })
   content: string;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => User, (user) => user.alerts, {
     cascade: ['insert', 'recover', 'update'],
   })

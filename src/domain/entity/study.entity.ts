@@ -35,10 +35,16 @@ export class Study extends DateEntity {
   })
   link: string;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => User, (user) => user.studies, {
     cascade: ['insert', 'recover', 'update'],
   })
   user: User;
+
+  @Column()
+  publicationId: number;
 
   @ManyToOne(() => Publication, (publication) => publication.studies, {
     cascade: ['insert', 'recover', 'update'],

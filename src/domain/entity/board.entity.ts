@@ -35,10 +35,16 @@ export class Board extends DateEntity {
   })
   link: string;
 
+  @Column()
+  researcherId: number;
+
   @ManyToOne(() => Researcher, (researcher) => researcher.boards, {
     cascade: ['insert', 'recover', 'update'],
   })
   researcher: Researcher;
+
+  @Column()
+  labId: number;
 
   @ManyToOne(() => Lab, (lab) => lab.boards, {
     cascade: ['insert', 'recover', 'update'],
