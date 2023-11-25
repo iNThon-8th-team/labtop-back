@@ -3,13 +3,19 @@ import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GetBoardReqDto {
   @IsOptional()
-  @IsNumber()
-  @ApiProperty({ description: '연구실 번호' })
-  labId?: number;
+  @IsString()
+  @ApiProperty({ description: '연구실 이름' })
+  labName?: string;
 
   // 연구실 이름, 교수님 성함
   @IsOptional()
   @IsString()
-  @ApiProperty({ description: '검색어' })
-  search?: string;
+  @ApiProperty({ description: '제목' })
+  title?: string;
+
+  // 연구실 이름, 교수님 성함
+  @IsOptional()
+  @IsString()
+  @ApiProperty({ description: '작성자' })
+  author?: string;
 }

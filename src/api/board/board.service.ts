@@ -33,4 +33,24 @@ export class BoardService {
       }),
     );
   }
+
+  async;
+
+  async createBoard(
+    board: CreateBoardReqDto,
+    userId: number,
+  ): Promise<OkResDto> {
+    const user = await this.userRepository.findOneById(userId);
+    const newBoard = this.boardRepository.create(board);
+    if (!user.isResearcher) {
+      throw new UnauthorizedException(
+        '연구원이 아닐 경우 게시물을 생성할 수 없습니다.',
+      );
+    }
+    const researcher = await this.researcherRepository.findByUserId(userId);
+    newBoard.researcherId = researcher.id;
+    newBoard.labId = researcher.labId;
+    await this.boardRepository.save(newBoard);
+    return new OkResDto();
+  }
 }

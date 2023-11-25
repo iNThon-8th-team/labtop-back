@@ -15,14 +15,4 @@ export class CreateBoardReqDto {
   @IsBoolean()
   @ApiProperty({ description: '공지' })
   isNotice: boolean;
-
-  @IsDefined()
-  @IsNumber()
-  @ApiProperty({ description: '연구실' })
-  labId: number;
-
-  @IsDefined()
-  @IsNumber()
-  @ApiProperty({ description: '연구원' })
-  reseacherId: number;
 }
