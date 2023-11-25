@@ -33,17 +33,4 @@ export class BoardService {
       }),
     );
   }
-
-  async createLab(board: CreateBoardReqDto, userId: number): Promise<OkResDto> {
-    const user = await this.userRepository.findOneById(userId);
-    const newLab = this.boardRepository.create(board);
-    if (!user.isResearcher) {
-      throw new UnauthorizedException(
-        '연구원이 아닐 경우 연구실을 생성할 수 없습니다.',
-      );
-    }
-    //newLab.professorId = userId;
-    await this.labRepository.save(newLab);
-    return new OkResDto();
-  }
 }
