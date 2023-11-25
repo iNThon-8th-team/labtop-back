@@ -5,7 +5,6 @@ import { TypeOrmExModule } from 'src/common/typorm-ex.module';
 import {
   BoardRepository,
   LabRepository,
-  ResearcherRepository,
   SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
@@ -17,7 +16,6 @@ import { AuthModule } from '../auth/auth.module';
       LabRepository,
       UserRepository,
       BoardRepository,
-      ResearcherRepository,
       SubscribeRepository,
     ]),
     AuthModule,

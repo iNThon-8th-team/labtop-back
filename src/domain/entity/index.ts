@@ -1,10 +1,8 @@
 export { Alert } from './alert.entity';
-export { Author } from './author.entity';
 export { Board } from './board.entity';
 export { Lab } from './lab.entity';
 export { Message } from './mesage.entity';
 export { Publication } from './publication.entity';
-export { Researcher } from './researcher.entity';
 export { Study } from './study.entity';
 export { Subscribe } from './subscribe.entity';
 export { DateEntity } from './dateEntity.entity';

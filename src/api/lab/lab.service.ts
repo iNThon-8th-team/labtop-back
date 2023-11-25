@@ -12,7 +12,6 @@ import {
 } from 'src/dto';
 import {
   LabRepository,
-  ResearcherRepository,
   SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
@@ -24,7 +23,6 @@ export class LabService {
     private labRepository: LabRepository,
     private userRepository: UserRepository,
     private subscribeRepository: SubscribeRepository,
-    private researcherRepository: ResearcherRepository,
   ) {}
 
   async getLabList(query: GetLabListReqDto): Promise<GetLabListResDto[]> {
@@ -48,12 +46,7 @@ export class LabService {
       );
     }
     newLab.professorId = userId;
-    const { id: labId } = await this.labRepository.save(newLab);
-    const professor = this.researcherRepository.create({
-      userId,
-      labId,
-    });
-    await this.researcherRepository.save(professor);
+    await this.labRepository.save(newLab);
     return new OkResDto();
   }
 
@@ -65,7 +58,7 @@ export class LabService {
         throw new BadRequestException('존재하지 않는 연구실입니다.');
       });
     const isBelongsToLab = existLab.researchers
-      .map((researcher) => researcher.userId)
+      .map((researcher) => researcher.id)
       .includes(user.id);
     if (!isBelongsToLab) {
       throw new UnauthorizedException(
@@ -94,7 +87,7 @@ export class LabService {
     const researchers = (
       await Promise.all(
         lab.researchers.map(async (researcher) => {
-          return await this.userRepository.findOneById(researcher.userId);
+          return await this.userRepository.findOneById(researcher.id);
         }),
       )
     ).filter((researcher) => !researcher.isProfessor);
@@ -112,8 +105,9 @@ export class LabService {
       throw new BadRequestException('해당하는 연구실 정보가 없습니다.');
     });
 
-    const researcher = this.researcherRepository.create({ labId, userId });
-    await this.researcherRepository.save(researcher);
+    const researcher = await this.userRepository.findOneById(userId);
+    researcher.labId = labId;
+    await this.userRepository.save(researcher);
     return new OkResDto();
   }
 

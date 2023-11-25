@@ -6,7 +6,6 @@ import {
   Put,
   Get,
   Post,
-  Query,
   Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
