@@ -3,6 +3,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -14,6 +15,7 @@ import { Alert } from './alert.entity';
 import { Study } from './study.entity';
 import { Publication } from './publication.entity';
 import { Board } from './board.entity';
+import { Portfolio } from './portfolio.entity';
 
 @Entity({ name: 'user' })
 @Unique(['email'])
@@ -73,6 +75,11 @@ export class User extends DateEntity {
 
   @Column({ nullable: true })
   labId: number;
+
+  @OneToOne(() => Portfolio, (portfolio) => portfolio.user, {
+    cascade: ['insert', 'recover', 'update'],
+  })
+  portfolio: Portfolio;
 
   @ManyToOne(() => Lab, (lab) => lab.researchers, {
     cascade: ['insert', 'recover', 'update'],

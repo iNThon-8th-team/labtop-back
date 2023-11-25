@@ -11,6 +11,7 @@ import {
   Publication,
   Study,
   Subscribe,
+  Portfolio,
 } from './domain/entity';
 import { AuthModule } from './api/auth/auth.module';
 import { LabModule } from './api/lab/lab.module';
@@ -48,6 +49,7 @@ import { PublicationModule } from './api/publication/publication.module';
         Publication,
         Study,
         Subscribe,
+        Portfolio,
       ],
       synchronize: true,
     }),

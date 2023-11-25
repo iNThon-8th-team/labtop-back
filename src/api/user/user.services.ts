@@ -1,13 +1,25 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { OkResDto, GetUserResDto, UpdateUserReqDto } from 'src/dto';
-import { SubscribeRepository, UserRepository } from 'src/domain/repository';
-import { Subscribe } from 'src/domain/entity';
+import {
+  OkResDto,
+  GetUserResDto,
+  UpdateUserReqDto,
+  UpdatePortfolioReqDto,
+} from 'src/dto';
+import {
+  PortfolioRepository,
+  SubscribeRepository,
+  UserRepository,
+} from 'src/domain/repository';
+import { Portfolio } from 'src/domain/entity';
+import { joinInput } from 'src/common/util/util';
+import { GetPortfolioResDto } from 'src/dto/user/get-portfolio-res.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     private userRepository: UserRepository,
     private subscribeRepository: SubscribeRepository,
+    private portfolioRepository: PortfolioRepository,
   ) {}
 
   async subscribe(labId: number, userId: number): Promise<OkResDto> {
@@ -42,5 +54,29 @@ export class UserService {
     user.username = study.username;
     await this.userRepository.save(user);
     return new OkResDto();
+  }
+
+  async updatePortfolio(
+    portfolio: UpdatePortfolioReqDto,
+    userId: number,
+  ): Promise<OkResDto> {
+    const existPortfolio = await this.portfolioRepository.findOneByUserId(
+      userId,
+    );
+    const newPortfolio = this.portfolioRepository.create({
+      ...portfolio,
+      certificate: joinInput(portfolio.certificate),
+      award: joinInput(portfolio.award),
+    });
+    newPortfolio.userId = userId;
+    newPortfolio.id = existPortfolio ? existPortfolio.id : undefined;
+    await this.portfolioRepository.save(newPortfolio);
+    return new OkResDto();
+  }
+
+  async getPortfolio(userId: number): Promise<GetPortfolioResDto> {
+    const portfolio = await this.portfolioRepository.findOneByUserId(userId);
+    if (!portfolio) return new GetPortfolioResDto(new Portfolio());
+    return new GetPortfolioResDto(portfolio);
   }
 }
