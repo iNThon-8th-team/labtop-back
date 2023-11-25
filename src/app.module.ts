@@ -16,6 +16,7 @@ import {
 } from './domain/entity';
 import { AuthModule } from './api/auth/auth.module';
 import { LabModule } from './api/lab/lab.module';
+import { BoardModule } from './api/board/board.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { LabModule } from './api/lab/lab.module';
     }),
     AuthModule,
     LabModule,
+    BoardModule,
   ],
 })
 export class AppModule {}

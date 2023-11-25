@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   BoardRepository,
   LabRepository,
   ResearcherRepository,
   UserRepository,
 } from 'src/domain/repository';
-import { GetBoardListResDto } from 'src/dto/board/get-board-list-res.dto';
+import { OkResDto } from 'src/dto';
+import { GetBoardResDto, CreateBoardReqDto } from 'src/dto/board';
 
 @Injectable()
 export class BoardService {
@@ -16,7 +17,7 @@ export class BoardService {
     private researcherRepository: ResearcherRepository,
   ) {}
 
-  async getBoardList(): Promise<GetBoardListResDto[]> {
+  async getBoardList(): Promise<GetBoardResDto[]> {
     const board = await this.boardRepository.findAll();
     return Promise.all(
       board.map(async (board) => {
@@ -28,8 +29,21 @@ export class BoardService {
         const lab = await this.labRepository.findByIdWithResearchers(
           board.labId,
         );
-        return new GetBoardListResDto(board, professor, lab);
+        return new GetBoardResDto(board, professor, lab);
       }),
     );
+  }
+
+  async createLab(board: CreateBoardReqDto, userId: number): Promise<OkResDto> {
+    const user = await this.userRepository.findOneById(userId);
+    const newLab = this.boardRepository.create(board);
+    if (!user.isResearcher) {
+      throw new UnauthorizedException(
+        '연구원이 아닐 경우 연구실을 생성할 수 없습니다.',
+      );
+    }
+    //newLab.professorId = userId;
+    await this.labRepository.save(newLab);
+    return new OkResDto();
   }
 }

@@ -23,17 +23,17 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { BoardService } from './board.service';
-import { GetBoardListResDto } from 'src/dto/board/get-board-list-res.dto';
-import { GetBoardListReqDto } from 'src/dto/board/get-board-list-req.dto';
+import { GetBoardResDto } from 'src/dto/board/get-board-res.dto';
+import { GetBoardReqDto } from 'src/dto/board/get-board-req.dto';
 
 @Controller('board')
 export class BoardController {
   constructor(private boardService: BoardService) {}
   @Get()
-  @ApiQuery({ type: GetBoardListReqDto })
-  @ApiOkResponse({ type: [GetBoardListResDto] })
+  @ApiQuery({ type: GetBoardReqDto })
+  @ApiOkResponse({ type: [GetBoardResDto] })
   @ApiOperation({ summary: '게시판 목록 가져오기' })
-  async getBoardList(): Promise<GetBoardListResDto[]> {
+  async getBoardList(): Promise<GetBoardResDto[]> {
     return this.boardService.getBoardList();
   }
 }
