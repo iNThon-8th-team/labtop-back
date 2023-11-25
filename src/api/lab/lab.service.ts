@@ -21,7 +21,6 @@ export class LabService {
 
   async getLabList(query: GetLabListReqDto): Promise<GetLabListResDto[]> {
     const labs = await this.labRepository.findBySearchOption(query);
-    console.log(labs);
     return Promise.all(
       labs.map(async (lab) => {
         const professor = await this.userRepository.findOneById(

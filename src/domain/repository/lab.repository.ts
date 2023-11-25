@@ -6,6 +6,7 @@ import { GetLabListReqDto } from 'src/dto';
 export class LabRepository extends Repository<Lab> {
   async findBySearchOption(query: GetLabListReqDto): Promise<Lab[]> {
     const { search, category } = query;
+    if (!search && !category) return this.find();
     return this.find({
       where: [
         {
