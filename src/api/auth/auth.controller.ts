@@ -3,8 +3,18 @@ import { AuthService } from './auth.service';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
 import { JwtAuthGuard } from 'src/common/jwt/jwt-auth-guard';
-import { CreateUserReqDto, LoginReqDto } from 'src/dto';
-import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
+import {
+  CreateUserReqDto,
+  CreateUserResDto,
+  LoginReqDto,
+  LoginResDto,
+} from 'src/dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -13,21 +23,23 @@ export class AuthController {
   @Post('/test')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async test(@GetUser() user: User) {
+  async test(@GetUser() user: User): Promise<void> {
     console.log('user', user);
   }
 
   @Post('/signIn')
   @ApiOperation({ summary: '로그인' })
   @ApiBody({ type: LoginReqDto })
-  async signIn(@Body() user: LoginReqDto) {
+  @ApiOkResponse({ type: LoginResDto })
+  async signIn(@Body() user: LoginReqDto): Promise<LoginResDto> {
     return this.authService.signIn(user);
   }
 
   @Post('/signUp')
   @ApiOperation({ summary: '회원 가입' })
   @ApiBody({ type: CreateUserReqDto })
-  async signUp(@Body() user: CreateUserReqDto) {
+  @ApiOkResponse({ type: CreateUserResDto })
+  async signUp(@Body() user: CreateUserReqDto): Promise<CreateUserResDto> {
     return this.authService.signUp(user);
   }
 }

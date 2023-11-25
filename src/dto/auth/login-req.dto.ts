@@ -4,7 +4,7 @@ export class LoginReqDto {
   @IsDefined()
   @IsString()
   @ApiProperty({ description: '사용자 이름' })
-  username: string;
+  email: string;
 
   @IsOptional()
   @IsString()
