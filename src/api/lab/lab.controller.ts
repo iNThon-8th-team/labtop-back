@@ -99,7 +99,7 @@ export class LabController {
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: [GetLabListResDto] })
   @ApiOperation({ summary: '내 연구실 가져오기' })
-  async getMyLab(@GetUser() user: User): Promise<GetLabListResDto[]> {
-    return this.labService.getMyLab(user.id);
+  async getMyLab(@Param('userId') userId: number): Promise<GetLabListResDto[]> {
+    return this.labService.getMyLab(userId);
   }
 }
