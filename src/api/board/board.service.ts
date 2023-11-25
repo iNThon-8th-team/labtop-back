@@ -11,6 +11,7 @@ import {
   GetBoardResDto,
   CreateBoardReqDto,
   GetBoardReqDto,
+  GetBoardListResDto,
 } from 'src/dto/board';
 
 @Injectable()
@@ -56,5 +57,12 @@ export class BoardService {
     newBoard.labId = researcher.labId;
     await this.boardRepository.save(newBoard);
     return new OkResDto();
+  }
+
+  async getBoardListWithLabId(labId: number): Promise<GetBoardListResDto[]> {
+    const boards = await this.boardRepository.findByLabId(labId);
+    return boards.map((board) => {
+      return new GetBoardListResDto(board);
+    });
   }
 }
