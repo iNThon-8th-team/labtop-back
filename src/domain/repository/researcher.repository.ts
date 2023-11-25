@@ -14,4 +14,10 @@ export class ResearcherRepository extends Repository<Researcher> {
       where: { labId: labId },
     });
   }
+
+  async findOneById(id: number): Promise<Researcher> {
+    return this.findOneOrFail({
+      where: { id },
+    });
+  }
 }

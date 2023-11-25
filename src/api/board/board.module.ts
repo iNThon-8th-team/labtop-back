@@ -6,8 +6,10 @@ import {
   BoardRepository,
   LabRepository,
   ResearcherRepository,
+  SubscribeRepository,
   UserRepository,
 } from 'src/domain/repository';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import {
       UserRepository,
       BoardRepository,
       ResearcherRepository,
+      SubscribeRepository,
     ]),
+    AuthModule,
   ],
   controllers: [BoardController],
   providers: [BoardService],

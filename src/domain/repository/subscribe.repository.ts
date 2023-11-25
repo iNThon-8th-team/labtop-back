@@ -9,4 +9,8 @@ export class SubscribeRepository extends Repository<Subscribe> {
   ): Promise<Subscribe> {
     return this.findOneBy({ userId, labId });
   }
+
+  async findByUserId(userId: number): Promise<Subscribe[]> {
+    return this.find({ where: { userId } });
+  }
 }

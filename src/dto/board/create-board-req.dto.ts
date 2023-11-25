@@ -13,6 +13,6 @@ export class CreateBoardReqDto {
 
   @IsDefined()
   @IsBoolean()
-  @ApiProperty({ description: '공지' })
+  @ApiProperty({ description: '공지 여부' })
   isNotice: boolean;
 }
