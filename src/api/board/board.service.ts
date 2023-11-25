@@ -19,7 +19,7 @@ export class BoardService {
 
   async getBoardList(): Promise<GetBoardResDto[]> {
     const board = await this.boardRepository.findAll();
-    return Promise.all(
+    return await Promise.all(
       board.map(async (board) => {
         const professor = await this.userRepository.findOneById(
           (
