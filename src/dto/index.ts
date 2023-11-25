@@ -5,3 +5,4 @@ export * from './board';
 export * from './study';
 export * from './user';
 export * from './publication';
+export * from './mail';
