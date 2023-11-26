@@ -11,6 +11,7 @@ export class GetLabListResDto {
     this.isRecruiting = lab.isRecruiting;
     this.category = lab.category;
     this.professor = new GetUserResDto(professor);
+    this.image = lab.image;
   }
 
   @ApiProperty({ description: '연구실 id' })
@@ -30,4 +31,7 @@ export class GetLabListResDto {
 
   @ApiProperty({ description: '교수' })
   professor!: GetUserResDto;
+
+  @ApiProperty({ description: '대표 이미지' })
+  image?: string;
 }

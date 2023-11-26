@@ -20,6 +20,7 @@ export class GetLabDetailResDto {
       (researcher) => new GetUserResDto(researcher),
     );
     this.isSubscribed = isSubscribed;
+    this.image = lab.image;
   }
 
   @ApiProperty({ description: '연구실 id' })
@@ -45,4 +46,7 @@ export class GetLabDetailResDto {
 
   @ApiProperty({ description: '구독 여부' })
   isSubscribed!: boolean;
+
+  @ApiProperty({ description: '대표 이미지' })
+  image?: string;
 }

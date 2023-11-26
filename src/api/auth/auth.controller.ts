@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  InternalServerErrorException,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
@@ -32,7 +38,13 @@ export class AuthController {
   @ApiBody({ type: LoginReqDto })
   @ApiOkResponse({ type: LoginResDto })
   async signIn(@Body() user: LoginReqDto): Promise<LoginResDto> {
-    return this.authService.signIn(user);
+    try {
+      return this.authService.signIn(user);
+    } catch (e) {
+      console.log('error!');
+      console.log(e);
+      throw new InternalServerErrorException('Intended Error');
+    }
   }
 
   @Post('/signUp')
