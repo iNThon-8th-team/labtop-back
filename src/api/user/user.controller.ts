@@ -81,7 +81,7 @@ export class UserController {
   @Put('/portfolio')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: UpdateUserReqDto })
+  @ApiBody({ type: UpdatePortfolioReqDto })
   @ApiOkResponse({ type: OkResDto })
   @ApiOperation({ summary: '포트폴리오 수정하기' })
   async updatePortfolio(

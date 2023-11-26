@@ -5,9 +5,11 @@ import { GetPublicationResDto } from './get-publication-res.dto';
 
 export class GetPublicationListResDto {
   constructor(publications: Publication[], author: User) {
-    this.publications = publications.map(
-      (publication) => new GetPublicationResDto(publication),
-    );
+    this.publications = publications.map((publication) => {
+      const n = new GetPublicationResDto(publication);
+      console.log(n);
+      return n;
+    });
     this.author = new GetUserResDto(author);
   }
 
