@@ -1,7 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
   Post,
+  Res,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -13,6 +18,9 @@ import { OkResDto } from 'src/dto';
 import { ImageService } from './image.service';
 import { GetUser } from 'src/common/decorator/get-user.decorator';
 import { User } from 'src/domain/entity';
+import { Observable, of } from 'rxjs';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Controller('image')
 export class ImageController {

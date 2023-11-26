@@ -58,6 +58,16 @@ export class UserController {
     return await this.userService.unsubscribe(labId, user.id);
   }
 
+  @Get()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: UpdateUserReqDto })
+  @ApiOkResponse({ type: OkResDto })
+  @ApiOperation({ summary: '로그인한 사용자 정보 가져오기' })
+  async getCurrentUser(@GetUser() user: User): Promise<GetUserResDto> {
+    return this.userService.getUser(user.id);
+  }
+
   @Get('/:userId')
   @ApiOkResponse({ type: GetUserResDto })
   @ApiOperation({ summary: '사용자 정보 가져오기' })
