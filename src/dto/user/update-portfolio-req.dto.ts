@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 export class UpdatePortfolioReqDto {
   @IsOptional()
   @IsString()
@@ -22,12 +22,12 @@ export class UpdatePortfolioReqDto {
   credit?: number;
 
   @IsOptional()
-  @IsString()
+  @IsArray()
   @ApiProperty({ description: '자격증' })
   certificate?: string[];
 
   @IsOptional()
-  @IsString()
+  @IsArray()
   @ApiProperty({ description: '수상 경력' })
   award?: string[];
 
