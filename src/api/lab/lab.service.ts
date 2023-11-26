@@ -57,10 +57,7 @@ export class LabService {
       .catch(() => {
         throw new BadRequestException('존재하지 않는 연구실입니다.');
       });
-    const isBelongsToLab = existLab.researchers
-      .map((researcher) => researcher.id)
-      .includes(user.id);
-    if (!isBelongsToLab) {
+    if (existLab.professorId != userId) {
       throw new UnauthorizedException(
         '소속 연구원이 아닐 경우 연구실을 수정할 수 없습니다.',
       );

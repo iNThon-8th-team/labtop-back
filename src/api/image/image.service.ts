@@ -28,9 +28,9 @@ export class ImageService {
     userId: number,
     targetId: number,
   ): Promise<OkResDto> {
-    const lab = await this.labRepository.findOneByIdWithResearchers(targetId);
+    const lab = await this.labRepository.findOneById(targetId);
     const researcher = await this.userRepository.findOneById(userId);
-    if (!userId || !lab.researchers.map((x) => x.id).includes(researcher.id)) {
+    if (!userId || lab.professorId != userId) {
       throw new UnauthorizedException('권한이 없습니다.');
     }
     lab.image = path;
