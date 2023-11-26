@@ -55,7 +55,7 @@ export class StudyService {
     const studies = await this.studyRepository.findByUserIdWithPublication(
       userId,
     );
-
+    console.log(studies);
     return studies.map((study) => new GetStudyListResDto(study));
   }
 
