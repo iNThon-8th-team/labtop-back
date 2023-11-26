@@ -8,7 +8,9 @@ export class GetStudyListResDto {
     this.title = study.title;
     this.content = study.content;
     this.link = study.link;
-    this.publication = new GetPublicationResDto(study.publication);
+    this.publication = study.publication
+      ? new GetPublicationResDto(study.publication)
+      : null;
     this.createdAt = study.createdAt;
   }
 
