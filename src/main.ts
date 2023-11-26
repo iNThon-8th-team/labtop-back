@@ -31,6 +31,7 @@ async function bootstrap() {
   if (configService.get('NODE_ENV') === 'development') {
     Logger.log(`Application running on port ${PORT}, http://localhost:${PORT}`);
   }
+
   await app.listen(PORT);
 }
 bootstrap();

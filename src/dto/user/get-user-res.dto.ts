@@ -8,6 +8,8 @@ export class GetUserResDto {
     this.username = user.username;
     this.isProfessor = user.isProfessor;
     this.isResearcher = user.isResearcher;
+    this.introduction = user.introduction;
+    this.profile = user.profile;
   }
 
   @ApiProperty({ description: '사용자 id' })
@@ -24,4 +26,10 @@ export class GetUserResDto {
 
   @ApiProperty({ description: '연구자 여부' })
   isResearcher!: boolean;
+
+  @ApiProperty({ description: '소개글' })
+  introduction?: string;
+
+  @ApiProperty({ description: '프로필' })
+  profile?: string;
 }

@@ -38,13 +38,7 @@ export class AuthController {
   @ApiBody({ type: LoginReqDto })
   @ApiOkResponse({ type: LoginResDto })
   async signIn(@Body() user: LoginReqDto): Promise<LoginResDto> {
-    try {
-      return this.authService.signIn(user);
-    } catch (e) {
-      console.log('error!');
-      console.log(e);
-      throw new InternalServerErrorException('Intended Error');
-    }
+    return this.authService.signIn(user);
   }
 
   @Post('/signUp')
